@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/oce-course-api/oce-course-api.iml" filepath="$PROJECT_DIR$/oce-course-api/oce-course-api.iml" />
+      <module fileurl="file://$PROJECT_DIR$/oce-course-common/oce-course-common.iml" filepath="$PROJECT_DIR$/oce-course-common/oce-course-common.iml" />
+      <module fileurl="file://$PROJECT_DIR$/oce-course-console-web/oce-course-console-web.iml" filepath="$PROJECT_DIR$/oce-course-console-web/oce-course-console-web.iml" />
+      <module fileurl="file://$PROJECT_DIR$/oce-course-dao-api/oce-course-dao-api.iml" filepath="$PROJECT_DIR$/oce-course-dao-api/oce-course-dao-api.iml" />
+      <module fileurl="file://$PROJECT_DIR$/oce-course-pojo/oce-course-pojo.iml" filepath="$PROJECT_DIR$/oce-course-pojo/oce-course-pojo.iml" />
+      <module fileurl="file://$PROJECT_DIR$/oce-course-provide/oce-course-provide.iml" filepath="$PROJECT_DIR$/oce-course-provide/oce-course-provide.iml" />
+      <module fileurl="file://$PROJECT_DIR$/onlinecourse-parent.iml" filepath="$PROJECT_DIR$/onlinecourse-parent.iml" />
+    </modules>
+  </component>
+</project>

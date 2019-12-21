@@ -1,0 +1,14 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="oce-course-console-web:war">
+    <output-path>$PROJECT_DIR$/oce-course-console-web/target</output-path>
+    <properties id="maven-jee-properties">
+      <options>
+        <module>oce-course-console-web</module>
+        <packaging>war</packaging>
+      </options>
+    </properties>
+    <root id="archive" name="oce-course-console-web.war">
+      <element id="artifact" artifact-name="oce-course-console-web:war exploded" />
+    </root>
+  </artifact>
+</component>

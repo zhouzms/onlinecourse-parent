@@ -1,0 +1,7 @@
+# Project exclude paths
+/oce-course-api/target/
+/oce-course-common/target/
+/oce-course-console-web/target/
+/oce-course-dao-api/target/
+/oce-course-pojo/target/
+/oce-course-provide/target/

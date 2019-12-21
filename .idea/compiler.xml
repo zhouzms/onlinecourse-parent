@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="oce-course-console-web" />
+        <module name="oce-course-api" />
+        <module name="oce-course-common" />
+        <module name="oce-course-pojo" />
+        <module name="oce-course-provide" />
+        <module name="oce-course-dao-api" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="oce-course-api" target="1.7" />
+      <module name="oce-course-common" target="1.7" />
+      <module name="oce-course-console-web" target="1.7" />
+      <module name="oce-course-dao-api" target="1.7" />
+      <module name="oce-course-pojo" target="1.7" />
+      <module name="oce-course-provide" target="1.7" />
+      <module name="onlinecourse-parent" target="1.7" />
+    </bytecodeTargetLevel>
+  </component>
+</project>

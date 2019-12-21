@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zms.dao.api.CertDao">
+    <sql id="base_sql_cert">
+        id,certName,certUrl,certPic,parentId,isLeaf,type,flag,createTime
+    </sql>
+    <resultMap id="queryCert" type="com.zms.domin.Cert">
+        <id property="id" column="id"/>
+        <result property="certName" column="certName"/>
+        <result property="certUrl" column="certUrl"/>
+        <result property="certPic" column="certPic"/>
+        <result property="parentId" column="parentId"/>
+        <result property="isLeaf" column="isLeaf"/>
+        <result property="type" column="type"/>
+        <result property="flag" column="flag"/>
+        <result property="createTime" column="createTime"/>
+    </resultMap>
+    <select id="queryCertList" resultMap="queryCert" parameterType="com.zms.domin.Cert">
+        select <include refid="base_sql_cert"/>
+        from cert
+        <where>
+            <if test="id!='' and id!=null">
+                and id=#{id}
+            </if>
+            <if test="certName!='' and certName!=null">
+                and certName=#{certName}
+            </if>
+            <if test="certUrl!='' and certUrl!=null">
+                and certUrl=#{certUrl}
+            </if>
+            <if test="certPic!='' and certPic!=null">
+                and certPic=#{certPic}
+            </if>
+            <if test="parentId!='' and parentId != null">
+                and parentId=#{parentId}
+            </if>
+            <if test="isLeaf!='' and isLeaf!=null">
+                and isLeaf=#{isLeaf}
+            </if>
+            <if test="type!='' and type!=null">
+                and type=#{type}
+            </if>
+            <if test="createTime!='' and createTime!=null">
+                and createTime=#{createTime}
+            </if>
+            and flag=1 order by id
+        </where>
+    </select>
+</mapper>

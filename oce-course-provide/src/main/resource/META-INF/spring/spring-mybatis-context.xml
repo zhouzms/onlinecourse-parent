@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd">
+    <context:component-scan base-package="com.zms.*"/>
+    <!--加载配置文件jdbc.properties-->
+    <context:property-placeholder location="classpath:properties/jdbc.properties"/>
+    <!--配置数据库连接池-->
+    <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource" init-method="init" destroy-method="close">
+        <property name="driverClassName" value="${jdbc.driver}"/>
+        <property name="url" value="${jdbc.url}"/>
+        <property name="username" value="${jdbc.username}"/>
+        <property name="password" value="${jdbc.password}"/>
+        <!--连接对象配置-->
+        <property name="initialSize" value="${jdbc.initialSize}"/>
+        <property name="minIdle" value="${jdbc.minidle}"/>
+        <property name="maxActive" value="${jdbc.maxActive}"/>
+        <property name="maxWait" value="${jdbc.maxWait}"/>
+        <!--监控sql执行时间-->
+        <property name="filters" value="stat" />
+    </bean>
+    <!--配置mybatis-->
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="configLocation" value="classpath:mybatis/mybatis-config.xml"/>
+        <!--引入数据源-->
+        <property name="dataSource" ref="dataSource"/>
+        <!--配置mybatis的mapper的位置-->
+        <property name="mapperLocations">
+            <list>
+                <value>classpath*:mapping/*.xml</value>
+            </list>
+        </property>
+    </bean>
+    <!-- 扫描Mapper映射配置 -->
+    <bean id="mapperScannerConfigurer" class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="basePackage" value="com.zms.dao.api"/>
+        <!--这里一定要注入到sqlSessionFactory中去-->
+        <!--会报注入dao失败-->
+        <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
+    </bean>
+    <!--aop方式-->
+    <bean id="tranceManger" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+    <!--前置切点，就是在执行方法之前使用事务-->
+    <tx:advice transaction-manager="tranceManger" id="transactionInterceptor">
+        <tx:attributes>
+            <tx:method name="ins*" propagation="REQUIRED"/>
+            <tx:method name="upd*" propagation="REQUIRED"/>
+            <tx:method name="del*" propagation="REQUIRED"/>
+            <tx:method name="query*" propagation="SUPPORTS" read-only="true"/>
+        </tx:attributes>
+    </tx:advice>
+    <!--切点,指定需要使用事务的方法-->
+    <aop:config>
+        <aop:pointcut id="seviceimpl" expression="execution(* com.zms.serviceimpl.*.*(..))"/>
+        <aop:advisor advice-ref="transactionInterceptor" pointcut-ref="seviceimpl"/>
+    </aop:config>
+</beans>

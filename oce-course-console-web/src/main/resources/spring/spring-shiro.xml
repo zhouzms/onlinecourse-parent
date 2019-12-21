@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		">
+    <!-- 定义凭证匹配器 -->
+    <bean class="org.apache.shiro.authc.credential.HashedCredentialsMatcher" id="credentialsMatcher">
+        <!-- 配置散列算法 -->
+        <property name="hashAlgorithmName" value="md5"/>
+        <property name="hashIterations" value="3"/>
+    </bean>
+
+    <!-- 注册自定义Realm -->
+    <bean class="com.zms.web.filter.MyRealm" id="myRealm">
+        <!-- 配置凭证匹配器 -->
+        <property name="credentialsMatcher" ref="credentialsMatcher"/>
+    </bean>
+    <bean id="rememberMeCookie" class="org.apache.shiro.web.servlet.SimpleCookie">
+        <!-- rememberMe 是cookie的名字 -->
+        <constructor-arg value="reid"/>
+        <!-- cookie的缓存时间 -->
+        <property name="maxAge" value="86400"/>
+    </bean>
+    <bean id="rememberMeManager" class="org.apache.shiro.web.mgt.CookieRememberMeManager">
+        <property name="cipherKey" value="#{T(org.apache.shiro.codec.Base64).decode('6ZmI6I2j5Y+R5aSn5ZOlAA==')}"/>
+        <property name="cookie" ref="rememberMeCookie"/>
+    </bean>
+    <!-- 注册SecurityManager -->
+    <bean class="org.apache.shiro.web.mgt.DefaultWebSecurityManager" id="securityManager">
+        <!-- 配置自定义Realm -->
+        <property name="realm" ref="myRealm"/>
+        <!-- rememberMeManager 记住我 -->
+        <property name="rememberMeManager" ref="rememberMeManager"/>
+    </bean>
+    <!-- 注册ShiroFilterFactoryBean 注意id必须和web.xml中注册的targetBeanName的值一致 -->
+    <bean class="org.apache.shiro.spring.web.ShiroFilterFactoryBean" id="shiro">
+        <!-- 注册SecurityManager -->
+        <property name="securityManager" ref="securityManager"/>
+        <!-- 登录地址 如果用户请求的的地址是 那么会对该地址认证-->
+        <property name="loginUrl" value="/user/loginHtml"/>
+        <!-- 登录成功的跳转地址 -->
+        <property name="successUrl" value="/WEB-INF/page/index.jsp"/>
+        <!-- 访问未授权的页面跳转的地址 -->
+        <property name="unauthorizedUrl" value="/WEB-INF/page/refuse.jsp"/>
+        <!-- 设置 过滤器链 -->
+        <property name="filterChainDefinitions">
+            <value>
+                /static/**=anon
+                /logout = logout
+                /index/**=user
+            </value>
+        </property>
+    </bean>
+</beans>
