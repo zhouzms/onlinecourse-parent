@@ -45,4 +45,11 @@ public interface UserService {
      * @return
      */
     User queryAndUpdateUser(String number);
+
+    /**
+     * 更改密码
+     * @param user
+     * @return
+     */
+    int updatePasswordById(User user);
 }

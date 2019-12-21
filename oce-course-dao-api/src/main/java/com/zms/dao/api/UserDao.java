@@ -36,8 +36,9 @@ public interface UserDao {
     /**
      * 更新
      * @param currentUser
+     * @return
      */
-    void update(User currentUser);
+    int update(User currentUser);
 
     /**
      * 查询用户可以更改的信息

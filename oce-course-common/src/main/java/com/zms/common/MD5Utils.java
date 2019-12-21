@@ -12,6 +12,6 @@ public class MD5Utils {
     }
 
     public static void main(String[] args) {
-        System.out.println(MD5Utils.getMD5values("zms123","0795"));
+        System.out.println(MD5Utils.getMD5values("zms1234","7023116096"));
     }
 }

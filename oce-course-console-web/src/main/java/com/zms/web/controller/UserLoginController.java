@@ -88,7 +88,7 @@ public class UserLoginController extends BaseController {
     public String show(Model model){
         User user = (User) SecurityUtils.getSubject().getPrincipal();
         if(user==null){
-            return "redirect:login";
+            return "redirect:loginHtml";
         }
         User userUser = userService.queryAndUpdateUser(user.getNumber());
         model.addAttribute("user",userUser);
@@ -103,7 +103,7 @@ public class UserLoginController extends BaseController {
     public String upPassword(Model model){
         User user = (User) SecurityUtils.getSubject().getPrincipal();
         if(user==null){
-            return "redirect:login";
+            return "redirect:loginHtml";
         }
         model.addAttribute("user",user);
         return "main/updatePassword";
@@ -116,7 +116,7 @@ public class UserLoginController extends BaseController {
         String values = null;
         String pass = user.getPassword();
         if(!StringUtils.isBlank(oldpass)){
-            values = MD5Utils.getMD5values(oldpass, user.getRealName());
+            values = MD5Utils.getMD5values(oldpass, user.getNumber());
         }
         /**
          * 老密码与当前登录的密码一致
@@ -131,7 +131,20 @@ public class UserLoginController extends BaseController {
         return ajaxResult;
     }
     @RequestMapping("/upNewPassword")
-    public String upNewPassword(UserLogin userLogin){
-        return null;
+    @ResponseBody
+    public AjaxResult<String> upNewPassword(User user){
+        AjaxResult<String> result=new AjaxResult<>();
+        User users = (User) SecurityUtils.getSubject().getPrincipal();
+        user.setId(users.getId());
+        user.setPassword(MD5Utils.getMD5values(user.getPassword(),users.getNumber()));
+        int i = userService.updatePasswordById(user);
+        if(i>0){
+            result.setCode("200");
+            result.setMsg("修改成功");
+        }else {
+            result.setCode("300");
+            result.setMsg("修改失败");
+        }
+        return result;
     }
 }

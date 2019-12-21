@@ -42,4 +42,9 @@ public class UserServiceImpl implements UserService {
     public User queryAndUpdateUser(String number) {
         return userDao.queryUpdateUserMsgDao(number);
     }
+
+    @Override
+    public int updatePasswordById(User user) {
+        return userDao.update(user);
+    }
 }

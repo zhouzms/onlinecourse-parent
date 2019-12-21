@@ -19,16 +19,18 @@
             <ul class="layui-nav right" lay-filter="">
                 <li class="layui-nav-item">
                     <a href="javascript:;">
-                        <shiro:hasRole name="学生">
-                            <i class="fas fa-user"></i>
-                        </shiro:hasRole>
-                        <shiro:hasRole name="老师">
-                            <i class="fas fa-user-circle"></i>
-                        </shiro:hasRole>
-                        <shiro:hasRole name="管理员">
-                            <i class="fas fa-user-plus"></i>
-                        </shiro:hasRole>
-                        &nbsp;${username}
+                        <c:if test="${null!=username}">
+                            <shiro:hasRole name="学生">
+                                <i class="fas fa-user"></i>
+                            </shiro:hasRole>
+                            <shiro:hasRole name="老师">
+                                <i class="fas fa-user-circle"></i>
+                            </shiro:hasRole>
+                            <shiro:hasRole name="管理员">
+                                <i class="fas fa-user-plus"></i>
+                            </shiro:hasRole>
+                            &nbsp;${username}
+                        </c:if>
                     </a>
                     <dl class="layui-nav-child">
                         <!-- 二级菜单 -->
@@ -38,14 +40,16 @@
                                 <cite>用户信息</cite>
                             </a>
                         </dd>
-                       <shiro:hasAnyRoles name="学生,老师">
-                        <dd>
-                            <a onclick="xadmin.add_tab('修改密码','${adminContext}/user/updatePassword')">
-                                <i class="fas fa-user-lock"></i>
-                                <cite>修改密码</cite>
-                            </a>
-                        </dd>
-                       </shiro:hasAnyRoles>
+                        <c:if test="${null != username}">
+                           <shiro:hasAnyRoles name="学生,老师">
+                            <dd>
+                                <a onclick="xadmin.add_tab('修改密码','${adminContext}/user/updatePassword')">
+                                    <i class="fas fa-user-lock"></i>
+                                    <cite>修改密码</cite>
+                                </a>
+                            </dd>
+                           </shiro:hasAnyRoles>
+                        </c:if>
                         <dd>
                             <a onclick="xadmin.add_tab('帮助手册','welcome1.html')">
                                 <i class="fas fa-question-circle"></i>
@@ -118,13 +122,6 @@
         <div class="page-content-bg"></div>
         <style id="theme_style"></style>
         <!-- 中部结束 -->
-        <script>//百度统计可去掉
-            var _hmt = _hmt || []; (function() {
-                var hm = document.createElement("script");
-                hm.src = "https://hm.baidu.com/hm.js?b393d153aeb26b46e9431fabaf0f6190";
-                var s = document.getElementsByTagName("script")[0];
-                s.parentNode.insertBefore(hm, s);
-            })();</script>
     </body>
 
 </html>

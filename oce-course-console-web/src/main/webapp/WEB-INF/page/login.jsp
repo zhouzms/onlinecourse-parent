@@ -159,7 +159,7 @@
               if(error=="500"){
                   $("#msg").css("display","block");
                   $("#alertmsg").text("密码有误，请重新输入");
-                  $("#password").focus();
+                  $("#username").focus();
               }
               if(error=="800"){
                   $("#msg").css("display","block");

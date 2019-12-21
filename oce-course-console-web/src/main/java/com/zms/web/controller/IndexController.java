@@ -31,7 +31,7 @@ public class IndexController {
     public String goIndex(Model model){
         User user = (User)SecurityUtils.getSubject().getPrincipal();
         if (user == null) {
-            return "redirect:login";
+            return "redirect:user/loginHtml";
         }
         /**
          * 使用redis缓存
@@ -56,7 +56,7 @@ public class IndexController {
         User user = (User)SecurityUtils.getSubject().getPrincipal();
         Subject subject = SecurityUtils.getSubject();
         if (user == null) {
-            return "redirect:login";
+            return "redirect:user/loginHtml";
         }
         //管理员main界面
         if(subject.hasRole(RoleConstant.ADMIN)){
