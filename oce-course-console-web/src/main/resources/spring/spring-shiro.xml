@@ -47,7 +47,6 @@
             <value>
                 /static/**=anon
                 /logout = logout
-                /index/**=user
             </value>
         </property>
     </bean>

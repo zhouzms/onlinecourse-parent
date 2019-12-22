@@ -18,6 +18,83 @@
     <sql id="base_user_sql">
         id,number,password,realname,createtime,logintime,phone,address,sex,ip,status,type
     </sql>
+    <insert id="insertUser" parameterType="com.zms.domin.User">
+        insert into user
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+                id,
+            <if test="number != null" >
+                number,
+            </if>
+            <if test="password != null" >
+                password,
+            </if>
+            <if test="realName != null" >
+                realname,
+            </if>
+            <if test="createTime != null" >
+                createtime,
+            </if>
+            <if test="loginTime != null" >
+                logintime,
+            </if>
+            <if test="phone != null" >
+                phone,
+            </if>
+            <if test="address != null" >
+                address,
+            </if>
+            <if test="sex != null" >
+                sex,
+            </if>
+            <if test="ip != null" >
+                ip,
+            </if>
+            <if test="status != null" >
+                status,
+            </if>
+            <if test="type != null" >
+                type,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="id!=null ">
+                #{id,jdbcType=VARCHAR},
+            </if>
+            <if test="number!=null ">
+                #{number,jdbcType=VARCHAR},
+            </if>
+            <if test="password!=null ">
+               #{password,jdbcType=VARCHAR},
+            </if>
+            <if test="realName!=null">
+                #{realName,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime!=null" >
+                #{createTime,jdbcType=VARCHAR},
+            </if>
+            <if test="loginTime!=null">
+                #{loginTime,jdbcType=VARCHAR},
+            </if>
+            <if test="phone!=null">
+                #{phone,jdbcType=VARCHAR},
+            </if>
+            <if test="address!=null">
+                #{address,jdbcType=VARCHAR},
+            </if>
+            <if test="sex != null" >
+               #{sex,jdbcType=INTEGER},
+            </if>
+            <if test="ip != null" >
+                #{ip,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null" >
+               #{status,jdbcType=INTEGER},
+            </if>
+            <if test="type != null" >
+                #{type,jdbcType=INTEGER},
+            </if>
+        </trim>
+    </insert>
     <update id="update" parameterType="com.zms.domin.User">
         update user
         <set>
@@ -28,10 +105,13 @@
                 password = #{password,jdbcType=VARCHAR},
             </if>
             <if test="realName!=null and realName!=''">
-                realName = #{realName,jdbcType=VARCHAR},
+                realname = #{realName,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime!=null and createTime!=''">
+                createtime = #{createTime,jdbcType=VARCHAR},
             </if>
             <if test="loginTime!=null and loginTime!=''">
-                loginTime = #{loginTime,jdbcType=VARCHAR},
+                logintime = #{loginTime,jdbcType=VARCHAR},
             </if>
             <if test="phone!=null and phone!=''">
                 phone = #{phone,jdbcType=VARCHAR},
@@ -57,5 +137,47 @@
         select
         <include refid="base_user_sql"/>
         from user where number =#{number,jdbcType=VARCHAR}
+    </select>
+    <select id="queryList" resultType="com.zms.domin.User" resultMap="queryUser">
+        SELECT
+        <include refid="base_user_sql"/>
+        FROM user
+         <where>
+             1=1
+             <if test="id!='' and id!=null">
+                 and id=#{id}
+             </if>
+            <if test="number!=null and number!=''">
+                and number = #{number,jdbcType=VARCHAR}
+            </if>
+            <if test="password!=null and password!=''">
+                and password = #{password,jdbcType=VARCHAR}
+            </if>
+            <if test="realName!=null and realName!=''">
+                and realname = #{realName,jdbcType=VARCHAR}
+            </if>
+             <if test="createTime!=null and createTime!=''">
+                 and createtime = #{createTime,jdbcType=VARCHAR}
+             </if>
+            <if test="loginTime!=null and loginTime!=''">
+                and logintime = #{loginTime,jdbcType=VARCHAR}
+            </if>
+            <if test="phone!=null and phone!=''">
+                and phone = #{phone,jdbcType=VARCHAR}
+            </if>
+            <if test="address!=null and address!=''">
+                and address = #{address,jdbcType=VARCHAR}
+            </if>
+             <if test="sex != null and sex!='' " >
+                 and sex=#{sex,jdbcType=INTEGER}
+             </if>
+             <if test="ip != null and ip != ''" >
+                 and ip=#{ip,jdbcType=VARCHAR}
+             </if>
+             <if test="type != null and type != ''" >
+                 and type=#{type,jdbcType=INTEGER}
+             </if>
+         </where>
+        and status=1 order by id
     </select>
 </mapper>

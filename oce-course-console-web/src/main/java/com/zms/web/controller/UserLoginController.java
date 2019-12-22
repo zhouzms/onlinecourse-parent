@@ -1,11 +1,16 @@
 package com.zms.web.controller;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.zms.common.AjaxResult;
 import com.zms.common.GetTimeUtils;
 import com.zms.common.MD5Utils;
+import com.zms.common.UUIDUtils;
+import com.zms.common.http.HttpClientUtils;
 import com.zms.domin.User;
 import com.zms.domin.UserLogin;
 import com.zms.service.UserService;
+import com.zms.web.utils.redis.PropertiesUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.IncorrectCredentialsException;
@@ -19,7 +24,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.net.Inet4Address;
+import java.net.UnknownHostException;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author zms
@@ -85,12 +96,18 @@ public class UserLoginController extends BaseController {
      * @return
      */
     @RequestMapping("/showMsg")
-    public String show(Model model){
+    public String show(Model model,HttpServletRequest request){
         User user = (User) SecurityUtils.getSubject().getPrincipal();
-        if(user==null){
-            return "redirect:loginHtml";
+        User githubUser = (User)request.getSession().getAttribute("user");
+        User userUser=null;
+        if(githubUser!=null){
+            /**
+             * GitHub用户登录信息展示
+             */
+            userUser = userService.queryAndUpdateUser(githubUser.getNumber());
+        }else {
+            userUser = userService.queryAndUpdateUser(user.getNumber());
         }
-        User userUser = userService.queryAndUpdateUser(user.getNumber());
         model.addAttribute("user",userUser);
         return "main/UserMessage";
     }
@@ -103,7 +120,7 @@ public class UserLoginController extends BaseController {
     public String upPassword(Model model){
         User user = (User) SecurityUtils.getSubject().getPrincipal();
         if(user==null){
-            return "redirect:loginHtml";
+            return "redirect:/user/loginHtml";
         }
         model.addAttribute("user",user);
         return "main/updatePassword";
@@ -146,5 +163,61 @@ public class UserLoginController extends BaseController {
             result.setMsg("修改失败");
         }
         return result;
+    }
+    /**
+     * github登录
+     */
+    @RequestMapping("/callback")
+    public String callback(@RequestParam("code")String code, HttpServletRequest request) throws UnknownHostException {
+        /**
+         * 获取access-toke
+         */
+        Map<String,String> param=new HashMap<>(3);
+        /**
+         * 加载配置文件
+         */
+        PropertiesUtil.loadProperties("public.properties");
+        param.put("client_id",PropertiesUtil.getProperty("client_id"));
+        param.put("client_secret",PropertiesUtil.getProperty("client_secret"));
+        param.put("code",code);
+        String response = HttpClientUtils.doPost("https://github.com/login/oauth/access_token", param);
+        /**
+         * 获取GitHub用户信息并保存到数据库中
+         */
+        String[] strs = response.split("&");
+        String requestToken=strs[0];
+        String[] split = requestToken.split("=");
+        String accessToken=split[1];
+        /**
+         * 获取用户信息
+         */
+        String user = HttpClientUtils.doGet("https://api.github.com/user?" + requestToken);
+        JSONObject jsonObject = JSON.parseObject(user);
+        /**
+         * 通过用户名获取获取用户
+         */
+        String number=jsonObject.get("id").toString();
+        User user1=userService.queryUserServiceByNumber(number);
+        if(user1==null) {
+            /**
+             * 用户第一次登录
+             */
+            User currentUser=new User();
+            currentUser.setId(UUIDUtils.getUUID());
+            currentUser.setRealName(jsonObject.get("login").toString());
+            currentUser.setNumber(jsonObject.get("id").toString());
+            currentUser.setAddress(jsonObject.get("location").toString());
+            currentUser.setCreateTime(GetTimeUtils.getCurrentTime());
+            currentUser.setLoginTime(GetTimeUtils.getCurrentTime());
+            currentUser.setPassword(accessToken);
+            currentUser.setStatus(1);
+            currentUser.setType(1);
+            currentUser.setIp(Inet4Address.getLocalHost().getHostAddress());
+            userService.insertUser(currentUser);
+            request.getSession().setAttribute("user",currentUser);
+            }else {
+                request.getSession().setAttribute("user",user1);
+            }
+            return "redirect:/index/list";
     }
 }

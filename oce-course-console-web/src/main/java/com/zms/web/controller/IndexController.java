@@ -14,6 +14,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -28,10 +29,18 @@ public class IndexController {
     @Autowired
     private CertService certService;
     @RequestMapping("/list")
-    public String goIndex(Model model){
-        User user = (User)SecurityUtils.getSubject().getPrincipal();
-        if (user == null) {
-            return "redirect:user/loginHtml";
+    public String goIndex(Model model, HttpServletRequest request){
+        User users = (User)SecurityUtils.getSubject().getPrincipal();
+        User user=null;
+        if (users == null) {
+            user = (User)request.getSession().getAttribute("user");
+            /**
+             * GitHub用户标记为1
+             */
+            model.addAttribute("flag","1");
+        }else {
+            user=users;
+            model.addAttribute("flag","2");
         }
         /**
          * 使用redis缓存
@@ -52,22 +61,27 @@ public class IndexController {
         return "index";
     }
     @RequestMapping("/main")
-    public String goMain(Model model){
-        User user = (User)SecurityUtils.getSubject().getPrincipal();
+    public String goMain(Model model,HttpServletRequest request){
         Subject subject = SecurityUtils.getSubject();
-        if (user == null) {
-            return "redirect:user/loginHtml";
-        }
-        //管理员main界面
-        if(subject.hasRole(RoleConstant.ADMIN)){
+        User user = (User)request.getSession().getAttribute("user");
+        if(user!=null){
+            /**
+             * GitHub用户登录 与管理员main逻辑一致
+             */
 
-        }
-        //学生main界面
-        if(subject.hasRole(RoleConstant.STUDENT)){
+        }else {
+            //管理员main界面
+            if(subject.hasRole(RoleConstant.ADMIN)){
 
-        }
-        //老师main界面
-        if(subject.hasRole(RoleConstant.TEACHER)){
+            }
+            //学生main界面
+            if(subject.hasRole(RoleConstant.STUDENT)){
+
+            }
+            //老师main界面
+            if(subject.hasRole(RoleConstant.TEACHER)){
+
+            }
 
         }
         return "main/main";

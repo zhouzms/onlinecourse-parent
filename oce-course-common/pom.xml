@@ -20,6 +20,11 @@
             <version>4.0.1</version>
             <scope>compile</scope>
         </dependency>
+      <dependency>
+        <groupId>org.apache.httpcomponents</groupId>
+        <artifactId>httpclient</artifactId>
+        <version>4.3.5</version>
+      </dependency>
     </dependencies>
 
     <name>oce-course-common</name>
@@ -66,10 +71,6 @@
         <plugin>
           <artifactId>maven-site-plugin</artifactId>
           <version>3.7.1</version>
-        </plugin>
-        <plugin>
-          <artifactId>maven-project-info-reports-plugin</artifactId>
-          <version>3.0.0</version>
         </plugin>
       </plugins>
     </pluginManagement>

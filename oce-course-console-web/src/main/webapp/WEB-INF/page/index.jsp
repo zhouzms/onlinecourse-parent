@@ -18,17 +18,28 @@
             </div>
             <ul class="layui-nav right" lay-filter="">
                 <li class="layui-nav-item">
+                    <a onclick="xadmin.add_tab('消息中心','${adminContext}/user/showMsg')">
+                        消息中心<span class="layui-badge">6</span>
+                    </a>
+                </li>
+                <li class="layui-nav-item">
                     <a href="javascript:;">
-                        <c:if test="${null!=username}">
-                            <shiro:hasRole name="学生">
-                                <i class="fas fa-user"></i>
-                            </shiro:hasRole>
-                            <shiro:hasRole name="老师">
-                                <i class="fas fa-user-circle"></i>
-                            </shiro:hasRole>
-                            <shiro:hasRole name="管理员">
-                                <i class="fas fa-user-plus"></i>
-                            </shiro:hasRole>
+                        <c:if test="${flag==1}">
+                            <i class="fa fa-user-secret" aria-hidden="true"></i>
+                            &nbsp;${username}
+                        </c:if>
+                        <c:if test="${flag==2}">
+                            <c:if test="${null!=username}">
+                                <shiro:hasRole name="学生">
+                                    <i class="fas fa-user"></i>
+                                </shiro:hasRole>
+                                <shiro:hasRole name="老师">
+                                    <i class="fas fa-user-circle"></i>
+                                </shiro:hasRole>
+                                <shiro:hasRole name="管理员">
+                                    <i class="fas fa-user-plus"></i>
+                                </shiro:hasRole>
+                            </c:if>
                             &nbsp;${username}
                         </c:if>
                     </a>
@@ -63,7 +74,8 @@
                     </dl>
                 </li>
                 <li class="layui-nav-item to-index">
-                    <a href="http://www.ndkj.com.cn/">官网</a></li>
+                    <a href="http://www.ndkj.com.cn/">官网</a>
+                </li>
             </ul>
         </div>
         <!-- 顶部结束 -->

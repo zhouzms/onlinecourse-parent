@@ -46,4 +46,18 @@ public interface UserDao {
      * @return
      */
     User queryUpdateUserMsgDao(String number);
+
+    /**
+     * 查询用户
+     * @param currentUser
+     * @return
+     */
+    User queryList(User currentUser);
+
+    /**
+     * 插入用户
+     * @param currentUser
+     * @return
+     */
+    int insertUser(User currentUser);
 }

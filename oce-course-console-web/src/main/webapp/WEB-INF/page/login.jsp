@@ -75,7 +75,7 @@
 
             <div class="social-auth-links text-center mb-3">
                 <p>- OR -</p>
-                <a href="#" class="btn btn-block btn-info">
+                <a id="github" class="btn btn-block btn-info" style="color: whitesmoke;">
                     <i class="fab fa-github-square mr-2"></i> github
                 </a>
             </div>
@@ -167,6 +167,10 @@
                   $("#username").focus();
               }
           }
+          $("#github").click(function () {
+              layer.load(1);
+              window.location.href="https://github.com/login/oauth/authorize?client_id=7880c46b007cced27620"
+          });
     });
 </script>
 </body>

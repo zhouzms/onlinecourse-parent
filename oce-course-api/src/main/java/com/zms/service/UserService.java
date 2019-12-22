@@ -3,8 +3,6 @@ package com.zms.service;
 import com.zms.domin.PermissionTable;
 import com.zms.domin.RoleTable;
 import com.zms.domin.User;
-
-import javax.management.relation.Role;
 import java.util.List;
 
 /**
@@ -52,4 +50,11 @@ public interface UserService {
      * @return
      */
     int updatePasswordById(User user);
+
+    /**
+     * 插入用户信息
+     * @param currentUser
+     * @return
+     */
+    int insertUser(User currentUser);
 }
