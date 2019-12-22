@@ -54,7 +54,7 @@
     <!--dubbo依赖-->
     <zkclient-version>0.1</zkclient-version>
     <dubbo-version>2.6.0</dubbo-version>
-    <zookeeper-version>3.4.6</zookeeper-version>
+    <zookeeper-version>3.4.14</zookeeper-version>
     <!--shiro依赖-->
     <shiro-version>1.4.0</shiro-version>
   </properties>
