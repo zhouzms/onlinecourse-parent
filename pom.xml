@@ -28,7 +28,7 @@
     <!--springmvc依赖-->
     <spring-version>5.1.5.RELEASE</spring-version>
     <!--mybatis-spring依赖-->
-    <mybatis-version>3.4.6</mybatis-version>
+    <mybatis-version>3.5.6</mybatis-version>
     <mybatis-Spring-version>1.3.2</mybatis-Spring-version>
     <!--mybatis插件依赖-->
     <pagehelper-version>5.1.4</pagehelper-version>
