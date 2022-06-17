@@ -40,7 +40,7 @@
     <!--日志文件-->
     <slf4j-log4j12>1.7.2</slf4j-log4j12>
     <!--fastjson-->
-    <fastjson-version>1.2.6</fastjson-version>
+    <fastjson-version>1.2.83</fastjson-version>
     <!--jkson-->
     <jackson-version>2.10.0</jackson-version>
     <!--String-util-->
